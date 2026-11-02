@@ -250,6 +250,20 @@ export class Renderer {
       const a = clamp01((s.phaseTime - 0.4) / 0.3);
       glowText(ctx, 'LEVEL CLEAR', cx, FIELD_H / 2, 58, PALETTE.gold, a);
     }
+    if (s.god) {
+      // ?god playtest switch: make the bouncing floor visible so it is never mistaken for a bug.
+      ctx.save();
+      ctx.strokeStyle = PALETTE.warn;
+      ctx.globalAlpha = 0.5 + 0.2 * Math.sin(this.time * 4);
+      ctx.setLineDash([10, 8]);
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(0, FIELD_H - 1);
+      ctx.lineTo(FIELD_W, FIELD_H - 1);
+      ctx.stroke();
+      ctx.restore();
+      glowText(ctx, 'GOD MODE (?god): FLOOR BOUNCES', cx, FIELD_H - 10, 12, PALETTE.warn, 0.8);
+    }
     if (s.phase === 'lost') {
       glowText(ctx, s.lives === 1 ? 'LAST LIFE' : `${s.lives} LIVES LEFT`, cx, FIELD_H * 0.6, 34, PALETTE.warn, clamp01(s.phaseTime / 0.3));
     }
